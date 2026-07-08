@@ -22,7 +22,7 @@ export const Route = createFileRoute("/_app/knowledge/$section")({
 const filters = ["all", "articles", "videos", "pdfs"] as const;
 
 function SectionPage() {
-  const { section } = Route.useParams();
+  const { section } = Route.useParams() as { section: SectionKey };
   const { t, lang } = useI18n();
   const [filter, setFilter] = useState<(typeof filters)[number]>("all");
   const items = articles
