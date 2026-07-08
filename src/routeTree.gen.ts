@@ -9,27 +9,420 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AppRouteImport } from './routes/_app'
+import { Route as AppIndexRouteImport } from './routes/_app.index'
+import { Route as AuthSignupRouteImport } from './routes/auth.signup'
+import { Route as AuthOtpRouteImport } from './routes/auth.otp'
+import { Route as AuthLoginRouteImport } from './routes/auth.login'
+import { Route as AuthForgotRouteImport } from './routes/auth.forgot'
+import { Route as AppProfileRouteImport } from './routes/_app.profile'
+import { Route as AppKnowledgeRouteImport } from './routes/_app.knowledge'
+import { Route as AppCounselingRouteImport } from './routes/_app.counseling'
+import { Route as AppCaseStudiesRouteImport } from './routes/_app.case-studies'
+import { Route as AppProfileIndexRouteImport } from './routes/_app.profile.index'
+import { Route as AppProfileSettingsRouteImport } from './routes/_app.profile.settings'
+import { Route as AppProfileSavedRouteImport } from './routes/_app.profile.saved'
+import { Route as AppProfileNotificationsRouteImport } from './routes/_app.profile.notifications'
+import { Route as AppProfileEditRouteImport } from './routes/_app.profile.edit'
+import { Route as AppKnowledgeSectionRouteImport } from './routes/_app.knowledge.$section'
 
-export interface FileRoutesByFullPath {}
-export interface FileRoutesByTo {}
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppRoute = AppRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AuthSignupRoute = AuthSignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthOtpRoute = AuthOtpRouteImport.update({
+  id: '/otp',
+  path: '/otp',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthForgotRoute = AuthForgotRouteImport.update({
+  id: '/forgot',
+  path: '/forgot',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AppProfileRoute = AppProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppKnowledgeRoute = AppKnowledgeRouteImport.update({
+  id: '/knowledge',
+  path: '/knowledge',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCounselingRoute = AppCounselingRouteImport.update({
+  id: '/counseling',
+  path: '/counseling',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCaseStudiesRoute = AppCaseStudiesRouteImport.update({
+  id: '/case-studies',
+  path: '/case-studies',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppProfileIndexRoute = AppProfileIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppProfileRoute,
+} as any)
+const AppProfileSettingsRoute = AppProfileSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppProfileRoute,
+} as any)
+const AppProfileSavedRoute = AppProfileSavedRouteImport.update({
+  id: '/saved',
+  path: '/saved',
+  getParentRoute: () => AppProfileRoute,
+} as any)
+const AppProfileNotificationsRoute = AppProfileNotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => AppProfileRoute,
+} as any)
+const AppProfileEditRoute = AppProfileEditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => AppProfileRoute,
+} as any)
+const AppKnowledgeSectionRoute = AppKnowledgeSectionRouteImport.update({
+  id: '/$section',
+  path: '/$section',
+  getParentRoute: () => AppKnowledgeRoute,
+} as any)
+
+export interface FileRoutesByFullPath {
+  '/': typeof AppIndexRoute
+  '/auth': typeof AuthRouteWithChildren
+  '/case-studies': typeof AppCaseStudiesRoute
+  '/counseling': typeof AppCounselingRoute
+  '/knowledge': typeof AppKnowledgeRouteWithChildren
+  '/profile': typeof AppProfileRouteWithChildren
+  '/auth/forgot': typeof AuthForgotRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/otp': typeof AuthOtpRoute
+  '/auth/signup': typeof AuthSignupRoute
+  '/knowledge/$section': typeof AppKnowledgeSectionRoute
+  '/profile/edit': typeof AppProfileEditRoute
+  '/profile/notifications': typeof AppProfileNotificationsRoute
+  '/profile/saved': typeof AppProfileSavedRoute
+  '/profile/settings': typeof AppProfileSettingsRoute
+  '/profile/': typeof AppProfileIndexRoute
+}
+export interface FileRoutesByTo {
+  '/auth': typeof AuthRouteWithChildren
+  '/case-studies': typeof AppCaseStudiesRoute
+  '/counseling': typeof AppCounselingRoute
+  '/knowledge': typeof AppKnowledgeRouteWithChildren
+  '/auth/forgot': typeof AuthForgotRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/otp': typeof AuthOtpRoute
+  '/auth/signup': typeof AuthSignupRoute
+  '/': typeof AppIndexRoute
+  '/knowledge/$section': typeof AppKnowledgeSectionRoute
+  '/profile/edit': typeof AppProfileEditRoute
+  '/profile/notifications': typeof AppProfileNotificationsRoute
+  '/profile/saved': typeof AppProfileSavedRoute
+  '/profile/settings': typeof AppProfileSettingsRoute
+  '/profile': typeof AppProfileIndexRoute
+}
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/_app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRouteWithChildren
+  '/_app/case-studies': typeof AppCaseStudiesRoute
+  '/_app/counseling': typeof AppCounselingRoute
+  '/_app/knowledge': typeof AppKnowledgeRouteWithChildren
+  '/_app/profile': typeof AppProfileRouteWithChildren
+  '/auth/forgot': typeof AuthForgotRoute
+  '/auth/login': typeof AuthLoginRoute
+  '/auth/otp': typeof AuthOtpRoute
+  '/auth/signup': typeof AuthSignupRoute
+  '/_app/': typeof AppIndexRoute
+  '/_app/knowledge/$section': typeof AppKnowledgeSectionRoute
+  '/_app/profile/edit': typeof AppProfileEditRoute
+  '/_app/profile/notifications': typeof AppProfileNotificationsRoute
+  '/_app/profile/saved': typeof AppProfileSavedRoute
+  '/_app/profile/settings': typeof AppProfileSettingsRoute
+  '/_app/profile/': typeof AppProfileIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: never
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/case-studies'
+    | '/counseling'
+    | '/knowledge'
+    | '/profile'
+    | '/auth/forgot'
+    | '/auth/login'
+    | '/auth/otp'
+    | '/auth/signup'
+    | '/knowledge/$section'
+    | '/profile/edit'
+    | '/profile/notifications'
+    | '/profile/saved'
+    | '/profile/settings'
+    | '/profile/'
   fileRoutesByTo: FileRoutesByTo
-  to: never
-  id: '__root__'
+  to:
+    | '/auth'
+    | '/case-studies'
+    | '/counseling'
+    | '/knowledge'
+    | '/auth/forgot'
+    | '/auth/login'
+    | '/auth/otp'
+    | '/auth/signup'
+    | '/'
+    | '/knowledge/$section'
+    | '/profile/edit'
+    | '/profile/notifications'
+    | '/profile/saved'
+    | '/profile/settings'
+    | '/profile'
+  id:
+    | '__root__'
+    | '/_app'
+    | '/auth'
+    | '/_app/case-studies'
+    | '/_app/counseling'
+    | '/_app/knowledge'
+    | '/_app/profile'
+    | '/auth/forgot'
+    | '/auth/login'
+    | '/auth/otp'
+    | '/auth/signup'
+    | '/_app/'
+    | '/_app/knowledge/$section'
+    | '/_app/profile/edit'
+    | '/_app/profile/notifications'
+    | '/_app/profile/saved'
+    | '/_app/profile/settings'
+    | '/_app/profile/'
   fileRoutesById: FileRoutesById
 }
-export interface RootRouteChildren {}
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {}
+export interface RootRouteChildren {
+  AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
 }
 
-const rootRouteChildren: RootRouteChildren = {}
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app': {
+      id: '/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_app/': {
+      id: '/_app/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/auth/signup': {
+      id: '/auth/signup'
+      path: '/signup'
+      fullPath: '/auth/signup'
+      preLoaderRoute: typeof AuthSignupRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/auth/otp': {
+      id: '/auth/otp'
+      path: '/otp'
+      fullPath: '/auth/otp'
+      preLoaderRoute: typeof AuthOtpRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/auth/login': {
+      id: '/auth/login'
+      path: '/login'
+      fullPath: '/auth/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/auth/forgot': {
+      id: '/auth/forgot'
+      path: '/forgot'
+      fullPath: '/auth/forgot'
+      preLoaderRoute: typeof AuthForgotRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_app/profile': {
+      id: '/_app/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AppProfileRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/knowledge': {
+      id: '/_app/knowledge'
+      path: '/knowledge'
+      fullPath: '/knowledge'
+      preLoaderRoute: typeof AppKnowledgeRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/counseling': {
+      id: '/_app/counseling'
+      path: '/counseling'
+      fullPath: '/counseling'
+      preLoaderRoute: typeof AppCounselingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/case-studies': {
+      id: '/_app/case-studies'
+      path: '/case-studies'
+      fullPath: '/case-studies'
+      preLoaderRoute: typeof AppCaseStudiesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/profile/': {
+      id: '/_app/profile/'
+      path: '/'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof AppProfileIndexRouteImport
+      parentRoute: typeof AppProfileRoute
+    }
+    '/_app/profile/settings': {
+      id: '/_app/profile/settings'
+      path: '/settings'
+      fullPath: '/profile/settings'
+      preLoaderRoute: typeof AppProfileSettingsRouteImport
+      parentRoute: typeof AppProfileRoute
+    }
+    '/_app/profile/saved': {
+      id: '/_app/profile/saved'
+      path: '/saved'
+      fullPath: '/profile/saved'
+      preLoaderRoute: typeof AppProfileSavedRouteImport
+      parentRoute: typeof AppProfileRoute
+    }
+    '/_app/profile/notifications': {
+      id: '/_app/profile/notifications'
+      path: '/notifications'
+      fullPath: '/profile/notifications'
+      preLoaderRoute: typeof AppProfileNotificationsRouteImport
+      parentRoute: typeof AppProfileRoute
+    }
+    '/_app/profile/edit': {
+      id: '/_app/profile/edit'
+      path: '/edit'
+      fullPath: '/profile/edit'
+      preLoaderRoute: typeof AppProfileEditRouteImport
+      parentRoute: typeof AppProfileRoute
+    }
+    '/_app/knowledge/$section': {
+      id: '/_app/knowledge/$section'
+      path: '/$section'
+      fullPath: '/knowledge/$section'
+      preLoaderRoute: typeof AppKnowledgeSectionRouteImport
+      parentRoute: typeof AppKnowledgeRoute
+    }
+  }
+}
+
+interface AppKnowledgeRouteChildren {
+  AppKnowledgeSectionRoute: typeof AppKnowledgeSectionRoute
+}
+
+const AppKnowledgeRouteChildren: AppKnowledgeRouteChildren = {
+  AppKnowledgeSectionRoute: AppKnowledgeSectionRoute,
+}
+
+const AppKnowledgeRouteWithChildren = AppKnowledgeRoute._addFileChildren(
+  AppKnowledgeRouteChildren,
+)
+
+interface AppProfileRouteChildren {
+  AppProfileEditRoute: typeof AppProfileEditRoute
+  AppProfileNotificationsRoute: typeof AppProfileNotificationsRoute
+  AppProfileSavedRoute: typeof AppProfileSavedRoute
+  AppProfileSettingsRoute: typeof AppProfileSettingsRoute
+  AppProfileIndexRoute: typeof AppProfileIndexRoute
+}
+
+const AppProfileRouteChildren: AppProfileRouteChildren = {
+  AppProfileEditRoute: AppProfileEditRoute,
+  AppProfileNotificationsRoute: AppProfileNotificationsRoute,
+  AppProfileSavedRoute: AppProfileSavedRoute,
+  AppProfileSettingsRoute: AppProfileSettingsRoute,
+  AppProfileIndexRoute: AppProfileIndexRoute,
+}
+
+const AppProfileRouteWithChildren = AppProfileRoute._addFileChildren(
+  AppProfileRouteChildren,
+)
+
+interface AppRouteChildren {
+  AppCaseStudiesRoute: typeof AppCaseStudiesRoute
+  AppCounselingRoute: typeof AppCounselingRoute
+  AppKnowledgeRoute: typeof AppKnowledgeRouteWithChildren
+  AppProfileRoute: typeof AppProfileRouteWithChildren
+  AppIndexRoute: typeof AppIndexRoute
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppCaseStudiesRoute: AppCaseStudiesRoute,
+  AppCounselingRoute: AppCounselingRoute,
+  AppKnowledgeRoute: AppKnowledgeRouteWithChildren,
+  AppProfileRoute: AppProfileRouteWithChildren,
+  AppIndexRoute: AppIndexRoute,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
+
+interface AuthRouteChildren {
+  AuthForgotRoute: typeof AuthForgotRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthOtpRoute: typeof AuthOtpRoute
+  AuthSignupRoute: typeof AuthSignupRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthForgotRoute: AuthForgotRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthOtpRoute: AuthOtpRoute,
+  AuthSignupRoute: AuthSignupRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+const rootRouteChildren: RootRouteChildren = {
+  AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
+}
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
