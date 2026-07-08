@@ -1,4 +1,5 @@
 export type Lang = "en" | "ur";
+type Any = any;
 
 export const dictionaries = {
   en: {
