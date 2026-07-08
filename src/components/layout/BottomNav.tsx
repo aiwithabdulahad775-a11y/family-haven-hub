@@ -3,13 +3,14 @@ import { BookOpen, Heart, Home, MessageCircle, User } from "lucide-react";
 import { useI18n } from "@/i18n/LanguageProvider";
 import { cn } from "@/lib/utils";
 
-const items = [
+type NavItem = { to: string; key: "home" | "knowledge" | "cases" | "counseling" | "profile"; Icon: typeof Home; exact?: boolean };
+const items: NavItem[] = [
   { to: "/", key: "home", Icon: Home, exact: true },
   { to: "/knowledge", key: "knowledge", Icon: BookOpen },
   { to: "/case-studies", key: "cases", Icon: Heart },
   { to: "/counseling", key: "counseling", Icon: MessageCircle },
   { to: "/profile", key: "profile", Icon: User },
-] as const;
+];
 
 export function BottomNav() {
   const { t } = useI18n();

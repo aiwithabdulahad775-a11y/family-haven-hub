@@ -237,6 +237,6 @@ export const dictionaries = {
       darkMode: "تاریک",
     },
   },
-} as const;
+};
 
-export type Dict = typeof dictionaries.en;
+export type Dict = (typeof dictionaries)["en"];
