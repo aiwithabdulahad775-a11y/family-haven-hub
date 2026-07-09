@@ -1,22 +1,18 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { CalendarCheck, Clock, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { useI18n } from "@/i18n/LanguageProvider";
-import { counselors } from "@/lib/dummy-data";
+import { useCounselors } from "@/lib/queries";
+import { useAuth } from "@/hooks/use-auth";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/_app/counseling")({
   head: () => ({
@@ -30,7 +26,13 @@ export const Route = createFileRoute("/_app/counseling")({
 
 function CounselingPage() {
   const { t, lang } = useI18n();
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { data: counselors = [] } = useCounselors();
   const [confirmed, setConfirmed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [counselorId, setCounselorId] = useState<string>("");
+  const [topic, setTopic] = useState<string>("");
 
   return (
     <div className="animate-fade-in space-y-8">
@@ -58,22 +60,15 @@ function CounselingPage() {
         <h2 className="text-lg font-semibold">{t.counseling.counselors}</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           {counselors.map((c) => (
-            <article
-              key={c.id}
-              className="flex items-center gap-3 rounded-3xl border border-border/60 bg-card p-4 shadow-sm transition-all hover:shadow-soft"
-            >
+            <article key={c.id} className="flex items-center gap-3 rounded-3xl border border-border/60 bg-card p-4 shadow-sm transition-all hover:shadow-soft">
               <Avatar className="h-12 w-12">
-                <AvatarFallback
-                  style={{ backgroundColor: `hsl(${c.hue} 60% 85%)`, color: `hsl(${c.hue} 50% 25%)` }}
-                >
+                <AvatarFallback style={{ backgroundColor: `hsl(${c.hue} 60% 85%)`, color: `hsl(${c.hue} 50% 25%)` }}>
                   {c.initials}
                 </AvatarFallback>
               </Avatar>
               <div className="min-w-0 flex-1">
                 <p className="truncate font-semibold">{c.name}</p>
-                <p className="truncate text-xs text-muted-foreground">
-                  {c.role[lang]} · {c.years}y
-                </p>
+                <p className="truncate text-xs text-muted-foreground">{c.role[lang]} · {c.years}y</p>
                 <Badge variant="secondary" className="mt-1">{c.focus[lang]}</Badge>
               </div>
             </article>
@@ -90,35 +85,40 @@ function CounselingPage() {
             </div>
             <p className="font-semibold">{t.counseling.confirmTitle}</p>
             <p className="text-sm text-muted-foreground">{t.counseling.confirmBody}</p>
-            <Button variant="outline" onClick={() => setConfirmed(false)}>
-              {t.common.back}
-            </Button>
+            <Button variant="outline" onClick={() => setConfirmed(false)}>{t.common.back}</Button>
           </div>
         ) : (
           <form
             className="mt-4 grid gap-4"
-            onSubmit={(e) => {
+            onSubmit={async (e) => {
               e.preventDefault();
+              if (!user) {
+                toast.error("Please sign in to request counseling");
+                navigate({ to: "/auth/login" });
+                return;
+              }
+              if (!topic) return toast.error("Please choose a topic");
+              const fd = new FormData(e.currentTarget);
+              const description = String(fd.get("message") ?? "");
+              const preferred = String(fd.get("preferred") ?? "");
+              setLoading(true);
+              const { error } = await supabase.from("counseling_requests").insert({
+                user_id: user.id,
+                counselor_id: counselorId || null,
+                topic,
+                description,
+                scheduled_at: preferred ? new Date(preferred).toISOString() : null,
+                status: counselorId ? "assigned" : "pending",
+              });
+              setLoading(false);
+              if (error) return toast.error(error.message);
               setConfirmed(true);
               toast.success(t.counseling.confirmTitle);
             }}
           >
-            <Field label={t.counseling.form.name}>
-              <Input required placeholder="Fatima A." />
-            </Field>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <Field label={t.counseling.form.email}>
-                <Input required type="email" placeholder="you@example.com" />
-              </Field>
-              <Field label={t.counseling.form.phone}>
-                <Input required type="tel" placeholder="+92 300 0000000" />
-              </Field>
-            </div>
             <Field label={t.counseling.form.topic}>
-              <Select>
-                <SelectTrigger>
-                  <SelectValue placeholder="—" />
-                </SelectTrigger>
+              <Select value={topic} onValueChange={setTopic}>
+                <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="marriage">{t.knowledge.sections.marriage}</SelectItem>
                   <SelectItem value="parenting">{t.knowledge.sections.parenting}</SelectItem>
@@ -126,14 +126,24 @@ function CounselingPage() {
                 </SelectContent>
               </Select>
             </Field>
+            <Field label={t.counseling.counselors}>
+              <Select value={counselorId} onValueChange={setCounselorId}>
+                <SelectTrigger><SelectValue placeholder="—" /></SelectTrigger>
+                <SelectContent>
+                  {counselors.map((c) => (
+                    <SelectItem key={c.id} value={c.id}>{c.name} · {c.focus[lang]}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </Field>
             <Field label={t.counseling.form.preferred}>
-              <Input type="datetime-local" />
+              <Input name="preferred" type="datetime-local" />
             </Field>
             <Field label={t.counseling.form.message}>
-              <Textarea rows={4} required placeholder="…" />
+              <Textarea name="message" rows={4} required placeholder="…" />
             </Field>
-            <Button type="submit" size="lg" className="rounded-full">
-              {t.counseling.form.submit}
+            <Button type="submit" size="lg" className="rounded-full" disabled={loading}>
+              {loading ? "…" : t.counseling.form.submit}
             </Button>
           </form>
         )}

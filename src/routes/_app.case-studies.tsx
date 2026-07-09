@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { CaseCard } from "@/components/cards/CaseCard";
 import { useI18n } from "@/i18n/LanguageProvider";
-import { caseStudies } from "@/lib/dummy-data";
+import { useCases } from "@/lib/queries";
 
 export const Route = createFileRoute("/_app/case-studies")({
   head: () => ({
@@ -17,6 +17,7 @@ export const Route = createFileRoute("/_app/case-studies")({
 
 function CaseStudiesPage() {
   const { t, lang } = useI18n();
+  const { data: caseStudies = [] } = useCases();
   const cats = Array.from(new Set(caseStudies.map((c) => c.category[lang])));
   const [active, setActive] = useState<string>("all");
   const filtered = active === "all" ? caseStudies : caseStudies.filter((c) => c.category[lang] === active);
@@ -29,44 +30,21 @@ function CaseStudiesPage() {
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">{t.cases.featured}</h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          {caseStudies.slice(0, 2).map((c) => (
-            <CaseCard key={c.id} study={c} />
-          ))}
+          {caseStudies.slice(0, 2).map((c) => <CaseCard key={c.id} study={c} />)}
         </div>
       </section>
       <div className="-mx-4 flex gap-2 overflow-x-auto px-4">
-        <Button
-          size="sm"
-          className="rounded-full"
-          variant={active === "all" ? "default" : "outline"}
-          onClick={() => setActive("all")}
-        >
+        <Button size="sm" className="rounded-full" variant={active === "all" ? "default" : "outline"} onClick={() => setActive("all")}>
           {t.knowledge.filters.all}
         </Button>
         {cats.map((c) => (
-          <Button
-            key={c}
-            size="sm"
-            className="rounded-full"
-            variant={active === c ? "default" : "outline"}
-            onClick={() => setActive(c)}
-          >
+          <Button key={c} size="sm" className="rounded-full" variant={active === c ? "default" : "outline"} onClick={() => setActive(c)}>
             {c}
           </Button>
         ))}
       </div>
       <section className="grid gap-4 sm:grid-cols-2">
-        {filtered.map((c) => (
-          <CaseCard key={c.id} study={c} />
-        ))}
-      </section>
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">{t.cases.related}</h2>
-        <div className="grid gap-4 sm:grid-cols-2">
-          {caseStudies.slice(-2).map((c) => (
-            <CaseCard key={c.id} study={c} />
-          ))}
-        </div>
+        {filtered.map((c) => <CaseCard key={c.id} study={c} />)}
       </section>
     </div>
   );

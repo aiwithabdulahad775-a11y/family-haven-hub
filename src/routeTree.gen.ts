@@ -14,7 +14,6 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
 import { Route as AuthSignupRouteImport } from './routes/auth.signup'
 import { Route as AuthResetRouteImport } from './routes/auth.reset'
-import { Route as AuthOtpRouteImport } from './routes/auth.otp'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthForgotRouteImport } from './routes/auth.forgot'
 import { Route as AppProfileRouteImport } from './routes/_app.profile'
@@ -50,11 +49,6 @@ const AuthSignupRoute = AuthSignupRouteImport.update({
 const AuthResetRoute = AuthResetRouteImport.update({
   id: '/reset',
   path: '/reset',
-  getParentRoute: () => AuthRoute,
-} as any)
-const AuthOtpRoute = AuthOtpRouteImport.update({
-  id: '/otp',
-  path: '/otp',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
@@ -127,7 +121,6 @@ export interface FileRoutesByFullPath {
   '/profile': typeof AppProfileRouteWithChildren
   '/auth/forgot': typeof AuthForgotRoute
   '/auth/login': typeof AuthLoginRoute
-  '/auth/otp': typeof AuthOtpRoute
   '/auth/reset': typeof AuthResetRoute
   '/auth/signup': typeof AuthSignupRoute
   '/knowledge/$section': typeof AppKnowledgeSectionRoute
@@ -144,7 +137,6 @@ export interface FileRoutesByTo {
   '/knowledge': typeof AppKnowledgeRouteWithChildren
   '/auth/forgot': typeof AuthForgotRoute
   '/auth/login': typeof AuthLoginRoute
-  '/auth/otp': typeof AuthOtpRoute
   '/auth/reset': typeof AuthResetRoute
   '/auth/signup': typeof AuthSignupRoute
   '/': typeof AppIndexRoute
@@ -165,7 +157,6 @@ export interface FileRoutesById {
   '/_app/profile': typeof AppProfileRouteWithChildren
   '/auth/forgot': typeof AuthForgotRoute
   '/auth/login': typeof AuthLoginRoute
-  '/auth/otp': typeof AuthOtpRoute
   '/auth/reset': typeof AuthResetRoute
   '/auth/signup': typeof AuthSignupRoute
   '/_app/': typeof AppIndexRoute
@@ -187,7 +178,6 @@ export interface FileRouteTypes {
     | '/profile'
     | '/auth/forgot'
     | '/auth/login'
-    | '/auth/otp'
     | '/auth/reset'
     | '/auth/signup'
     | '/knowledge/$section'
@@ -204,7 +194,6 @@ export interface FileRouteTypes {
     | '/knowledge'
     | '/auth/forgot'
     | '/auth/login'
-    | '/auth/otp'
     | '/auth/reset'
     | '/auth/signup'
     | '/'
@@ -224,7 +213,6 @@ export interface FileRouteTypes {
     | '/_app/profile'
     | '/auth/forgot'
     | '/auth/login'
-    | '/auth/otp'
     | '/auth/reset'
     | '/auth/signup'
     | '/_app/'
@@ -276,13 +264,6 @@ declare module '@tanstack/react-router' {
       path: '/reset'
       fullPath: '/auth/reset'
       preLoaderRoute: typeof AuthResetRouteImport
-      parentRoute: typeof AuthRoute
-    }
-    '/auth/otp': {
-      id: '/auth/otp'
-      path: '/otp'
-      fullPath: '/auth/otp'
-      preLoaderRoute: typeof AuthOtpRouteImport
       parentRoute: typeof AuthRoute
     }
     '/auth/login': {
@@ -425,7 +406,6 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 interface AuthRouteChildren {
   AuthForgotRoute: typeof AuthForgotRoute
   AuthLoginRoute: typeof AuthLoginRoute
-  AuthOtpRoute: typeof AuthOtpRoute
   AuthResetRoute: typeof AuthResetRoute
   AuthSignupRoute: typeof AuthSignupRoute
 }
@@ -433,7 +413,6 @@ interface AuthRouteChildren {
 const AuthRouteChildren: AuthRouteChildren = {
   AuthForgotRoute: AuthForgotRoute,
   AuthLoginRoute: AuthLoginRoute,
-  AuthOtpRoute: AuthOtpRoute,
   AuthResetRoute: AuthResetRoute,
   AuthSignupRoute: AuthSignupRoute,
 }
