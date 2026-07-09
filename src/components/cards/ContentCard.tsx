@@ -1,8 +1,7 @@
-import { FileText, Play, BookOpen, Bookmark, BookmarkCheck } from "lucide-react";
-import { useState } from "react";
+import { FileText, Play, BookOpen } from "lucide-react";
 import { GradientThumb } from "@/components/ui/gradient-thumb";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { BookmarkButton } from "@/components/BookmarkButton";
 import { useI18n } from "@/i18n/LanguageProvider";
 import type { Article } from "@/lib/dummy-data";
 import { cn } from "@/lib/utils";
@@ -11,7 +10,6 @@ const typeIcon = { article: BookOpen, video: Play, pdf: FileText };
 
 export function ContentCard({ item, compact = false }: { item: Article; compact?: boolean }) {
   const { t, lang } = useI18n();
-  const [saved, setSaved] = useState(false);
   const Icon = typeIcon[item.type];
   return (
     <article
@@ -33,19 +31,7 @@ export function ContentCard({ item, compact = false }: { item: Article; compact?
           <span className="text-xs text-muted-foreground">
             {item.minutes} {t.common.minutes}
           </span>
-          <Button
-            variant="ghost"
-            size="icon"
-            aria-label={saved ? t.common.saved : t.common.save}
-            onClick={() => setSaved((v) => !v)}
-            className="rounded-full transition-transform active:scale-90"
-          >
-            {saved ? (
-              <BookmarkCheck className="h-5 w-5 text-primary" />
-            ) : (
-              <Bookmark className="h-5 w-5" />
-            )}
-          </Button>
+          <BookmarkButton itemId={item.id} kind="content" />
         </div>
       </div>
     </article>

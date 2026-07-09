@@ -13,13 +13,16 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app.index'
 import { Route as AuthSignupRouteImport } from './routes/auth.signup'
-import { Route as AuthOtpRouteImport } from './routes/auth.otp'
+import { Route as AuthResetRouteImport } from './routes/auth.reset'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthForgotRouteImport } from './routes/auth.forgot'
 import { Route as AppProfileRouteImport } from './routes/_app.profile'
 import { Route as AppKnowledgeRouteImport } from './routes/_app.knowledge'
+import { Route as AppCounselorRouteImport } from './routes/_app.counselor'
 import { Route as AppCounselingRouteImport } from './routes/_app.counseling'
+import { Route as AppContentRouteImport } from './routes/_app.content'
 import { Route as AppCaseStudiesRouteImport } from './routes/_app.case-studies'
+import { Route as AppAdminRouteImport } from './routes/_app.admin'
 import { Route as AppProfileIndexRouteImport } from './routes/_app.profile.index'
 import { Route as AppProfileSettingsRouteImport } from './routes/_app.profile.settings'
 import { Route as AppProfileSavedRouteImport } from './routes/_app.profile.saved'
@@ -46,9 +49,9 @@ const AuthSignupRoute = AuthSignupRouteImport.update({
   path: '/signup',
   getParentRoute: () => AuthRoute,
 } as any)
-const AuthOtpRoute = AuthOtpRouteImport.update({
-  id: '/otp',
-  path: '/otp',
+const AuthResetRoute = AuthResetRouteImport.update({
+  id: '/reset',
+  path: '/reset',
   getParentRoute: () => AuthRoute,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
@@ -71,14 +74,29 @@ const AppKnowledgeRoute = AppKnowledgeRouteImport.update({
   path: '/knowledge',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCounselorRoute = AppCounselorRouteImport.update({
+  id: '/counselor',
+  path: '/counselor',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCounselingRoute = AppCounselingRouteImport.update({
   id: '/counseling',
   path: '/counseling',
   getParentRoute: () => AppRoute,
 } as any)
+const AppContentRoute = AppContentRouteImport.update({
+  id: '/content',
+  path: '/content',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCaseStudiesRoute = AppCaseStudiesRouteImport.update({
   id: '/case-studies',
   path: '/case-studies',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => AppRoute,
 } as any)
 const AppProfileIndexRoute = AppProfileIndexRouteImport.update({
@@ -115,13 +133,16 @@ const AppKnowledgeSectionRoute = AppKnowledgeSectionRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/auth': typeof AuthRouteWithChildren
+  '/admin': typeof AppAdminRoute
   '/case-studies': typeof AppCaseStudiesRoute
+  '/content': typeof AppContentRoute
   '/counseling': typeof AppCounselingRoute
+  '/counselor': typeof AppCounselorRoute
   '/knowledge': typeof AppKnowledgeRouteWithChildren
   '/profile': typeof AppProfileRouteWithChildren
   '/auth/forgot': typeof AuthForgotRoute
   '/auth/login': typeof AuthLoginRoute
-  '/auth/otp': typeof AuthOtpRoute
+  '/auth/reset': typeof AuthResetRoute
   '/auth/signup': typeof AuthSignupRoute
   '/knowledge/$section': typeof AppKnowledgeSectionRoute
   '/profile/edit': typeof AppProfileEditRoute
@@ -132,12 +153,15 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/auth': typeof AuthRouteWithChildren
+  '/admin': typeof AppAdminRoute
   '/case-studies': typeof AppCaseStudiesRoute
+  '/content': typeof AppContentRoute
   '/counseling': typeof AppCounselingRoute
+  '/counselor': typeof AppCounselorRoute
   '/knowledge': typeof AppKnowledgeRouteWithChildren
   '/auth/forgot': typeof AuthForgotRoute
   '/auth/login': typeof AuthLoginRoute
-  '/auth/otp': typeof AuthOtpRoute
+  '/auth/reset': typeof AuthResetRoute
   '/auth/signup': typeof AuthSignupRoute
   '/': typeof AppIndexRoute
   '/knowledge/$section': typeof AppKnowledgeSectionRoute
@@ -151,13 +175,16 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_app': typeof AppRouteWithChildren
   '/auth': typeof AuthRouteWithChildren
+  '/_app/admin': typeof AppAdminRoute
   '/_app/case-studies': typeof AppCaseStudiesRoute
+  '/_app/content': typeof AppContentRoute
   '/_app/counseling': typeof AppCounselingRoute
+  '/_app/counselor': typeof AppCounselorRoute
   '/_app/knowledge': typeof AppKnowledgeRouteWithChildren
   '/_app/profile': typeof AppProfileRouteWithChildren
   '/auth/forgot': typeof AuthForgotRoute
   '/auth/login': typeof AuthLoginRoute
-  '/auth/otp': typeof AuthOtpRoute
+  '/auth/reset': typeof AuthResetRoute
   '/auth/signup': typeof AuthSignupRoute
   '/_app/': typeof AppIndexRoute
   '/_app/knowledge/$section': typeof AppKnowledgeSectionRoute
@@ -172,13 +199,16 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/admin'
     | '/case-studies'
+    | '/content'
     | '/counseling'
+    | '/counselor'
     | '/knowledge'
     | '/profile'
     | '/auth/forgot'
     | '/auth/login'
-    | '/auth/otp'
+    | '/auth/reset'
     | '/auth/signup'
     | '/knowledge/$section'
     | '/profile/edit'
@@ -189,12 +219,15 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/auth'
+    | '/admin'
     | '/case-studies'
+    | '/content'
     | '/counseling'
+    | '/counselor'
     | '/knowledge'
     | '/auth/forgot'
     | '/auth/login'
-    | '/auth/otp'
+    | '/auth/reset'
     | '/auth/signup'
     | '/'
     | '/knowledge/$section'
@@ -207,13 +240,16 @@ export interface FileRouteTypes {
     | '__root__'
     | '/_app'
     | '/auth'
+    | '/_app/admin'
     | '/_app/case-studies'
+    | '/_app/content'
     | '/_app/counseling'
+    | '/_app/counselor'
     | '/_app/knowledge'
     | '/_app/profile'
     | '/auth/forgot'
     | '/auth/login'
-    | '/auth/otp'
+    | '/auth/reset'
     | '/auth/signup'
     | '/_app/'
     | '/_app/knowledge/$section'
@@ -259,11 +295,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthSignupRouteImport
       parentRoute: typeof AuthRoute
     }
-    '/auth/otp': {
-      id: '/auth/otp'
-      path: '/otp'
-      fullPath: '/auth/otp'
-      preLoaderRoute: typeof AuthOtpRouteImport
+    '/auth/reset': {
+      id: '/auth/reset'
+      path: '/reset'
+      fullPath: '/auth/reset'
+      preLoaderRoute: typeof AuthResetRouteImport
       parentRoute: typeof AuthRoute
     }
     '/auth/login': {
@@ -294,6 +330,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppKnowledgeRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/counselor': {
+      id: '/_app/counselor'
+      path: '/counselor'
+      fullPath: '/counselor'
+      preLoaderRoute: typeof AppCounselorRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/counseling': {
       id: '/_app/counseling'
       path: '/counseling'
@@ -301,11 +344,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCounselingRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/content': {
+      id: '/_app/content'
+      path: '/content'
+      fullPath: '/content'
+      preLoaderRoute: typeof AppContentRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/case-studies': {
       id: '/_app/case-studies'
       path: '/case-studies'
       fullPath: '/case-studies'
       preLoaderRoute: typeof AppCaseStudiesRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/admin': {
+      id: '/_app/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/profile/': {
@@ -386,16 +443,22 @@ const AppProfileRouteWithChildren = AppProfileRoute._addFileChildren(
 )
 
 interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
   AppCaseStudiesRoute: typeof AppCaseStudiesRoute
+  AppContentRoute: typeof AppContentRoute
   AppCounselingRoute: typeof AppCounselingRoute
+  AppCounselorRoute: typeof AppCounselorRoute
   AppKnowledgeRoute: typeof AppKnowledgeRouteWithChildren
   AppProfileRoute: typeof AppProfileRouteWithChildren
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
   AppCaseStudiesRoute: AppCaseStudiesRoute,
+  AppContentRoute: AppContentRoute,
   AppCounselingRoute: AppCounselingRoute,
+  AppCounselorRoute: AppCounselorRoute,
   AppKnowledgeRoute: AppKnowledgeRouteWithChildren,
   AppProfileRoute: AppProfileRouteWithChildren,
   AppIndexRoute: AppIndexRoute,
@@ -406,14 +469,14 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 interface AuthRouteChildren {
   AuthForgotRoute: typeof AuthForgotRoute
   AuthLoginRoute: typeof AuthLoginRoute
-  AuthOtpRoute: typeof AuthOtpRoute
+  AuthResetRoute: typeof AuthResetRoute
   AuthSignupRoute: typeof AuthSignupRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthForgotRoute: AuthForgotRoute,
   AuthLoginRoute: AuthLoginRoute,
-  AuthOtpRoute: AuthOtpRoute,
+  AuthResetRoute: AuthResetRoute,
   AuthSignupRoute: AuthSignupRoute,
 }
 
@@ -426,13 +489,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

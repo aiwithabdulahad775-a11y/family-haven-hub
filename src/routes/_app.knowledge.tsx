@@ -4,7 +4,8 @@ import { Input } from "@/components/ui/input";
 import { GradientThumb } from "@/components/ui/gradient-thumb";
 import { ContentCard } from "@/components/cards/ContentCard";
 import { useI18n } from "@/i18n/LanguageProvider";
-import { articles, sectionOrder } from "@/lib/dummy-data";
+import { sectionOrder } from "@/lib/dummy-data";
+import { useContent } from "@/lib/queries";
 
 export const Route = createFileRoute("/_app/knowledge")({
   head: () => ({
@@ -17,7 +18,8 @@ export const Route = createFileRoute("/_app/knowledge")({
 });
 
 function KnowledgeIndex() {
-  const { t, lang } = useI18n();
+  const { t } = useI18n();
+  const { data: articles = [] } = useContent();
   return (
     <div className="animate-fade-in space-y-8">
       <header className="space-y-2">
@@ -43,9 +45,7 @@ function KnowledgeIndex() {
               <GradientThumb hue={200 + i * 30} className="h-16 w-16 shrink-0" />
               <div className="min-w-0 flex-1">
                 <p className="truncate font-semibold">{t.knowledge.sections[key]}</p>
-                <p className="text-xs text-muted-foreground">
-                  {count} {t.knowledge.filters.all.toLowerCase()}
-                </p>
+                <p className="text-xs text-muted-foreground">{count} {t.knowledge.filters.all.toLowerCase()}</p>
               </div>
               <span aria-hidden className="text-lg text-muted-foreground rtl:rotate-180">→</span>
             </Link>
@@ -56,9 +56,7 @@ function KnowledgeIndex() {
       <section className="space-y-3">
         <h2 className="text-lg font-semibold">{t.home.featured}</h2>
         <div className="grid gap-4 sm:grid-cols-2">
-          {articles.slice(0, 4).map((a) => (
-            <ContentCard key={a.id} item={a} />
-          ))}
+          {articles.slice(0, 4).map((a) => <ContentCard key={a.id} item={a} />)}
         </div>
       </section>
     </div>

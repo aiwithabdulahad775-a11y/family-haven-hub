@@ -9,6 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { BookmarkButton } from "@/components/BookmarkButton";
 import { useI18n } from "@/i18n/LanguageProvider";
 import type { CaseStudy } from "@/lib/dummy-data";
 
@@ -23,11 +24,14 @@ export function CaseCard({ study }: { study: CaseStudy }) {
         <div className="flex flex-1 flex-col gap-2 p-4">
           <h3 className="line-clamp-2 text-base font-semibold">{study.title[lang]}</h3>
           <p className="line-clamp-3 text-sm text-muted-foreground">{study.excerpt[lang]}</p>
-          <DialogTrigger asChild>
-            <Button variant="link" className="mt-auto w-fit px-0 text-primary">
-              {t.common.readMore} →
-            </Button>
-          </DialogTrigger>
+          <div className="mt-auto flex items-center justify-between pt-2">
+            <DialogTrigger asChild>
+              <Button variant="link" className="px-0 text-primary">
+                {t.common.readMore} →
+              </Button>
+            </DialogTrigger>
+            <BookmarkButton itemId={study.id} kind="case_study" />
+          </div>
         </div>
       </article>
       <DialogContent className="max-w-lg">
