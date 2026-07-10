@@ -4,14 +4,19 @@ import { supabase } from "@/integrations/supabase/client";
 import { mapContent, mapCase, mapCounselor } from "@/lib/mappers";
 import type { SectionKey } from "@/lib/app-types";
 
-export function useContent(section?: SectionKey, type?: "article" | "video" | "pdf") {
+export function useContent(section?: SectionKey, type?: "article" | "video" | "pdf", search?: string) {
+  const q = (search ?? "").trim();
   return useQuery({
-    queryKey: ["content", section ?? "all", type ?? "all"],
+    queryKey: ["content", section ?? "all", type ?? "all", q],
     queryFn: async () => {
-      let q = supabase.from("content_items").select("*").eq("is_published", true).is("deleted_at", null).order("created_at", { ascending: false });
-      if (section) q = q.eq("section", section);
-      if (type) q = q.eq("type", type);
-      const { data, error } = await q;
+      let query = supabase.from("content_items").select("*").eq("is_published", true).is("deleted_at", null).order("created_at", { ascending: false });
+      if (section) query = query.eq("section", section);
+      if (type) query = query.eq("type", type);
+      if (q) {
+        const like = `%${q.replace(/[%_]/g, "")}%`;
+        query = query.or(`title_en.ilike.${like},title_ur.ilike.${like},excerpt_en.ilike.${like},excerpt_ur.ilike.${like}`);
+      }
+      const { data, error } = await query;
       if (error) throw error;
       return (data ?? []).map(mapContent);
     },
