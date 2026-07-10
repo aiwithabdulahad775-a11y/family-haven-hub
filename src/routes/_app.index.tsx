@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { ArrowRight, FileText, Play, Search, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +9,7 @@ import { CaseCard } from "@/components/cards/CaseCard";
 import { GradientThumb } from "@/components/ui/gradient-thumb";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useI18n } from "@/i18n/LanguageProvider";
-import { sectionOrder } from "@/lib/dummy-data";
+import { sectionOrder } from "@/lib/app-types";
 import { useContent, useCases } from "@/lib/queries";
 
 export const Route = createFileRoute("/_app/")({
@@ -23,7 +24,8 @@ export const Route = createFileRoute("/_app/")({
 
 function HomePage() {
   const { t, lang } = useI18n();
-  const articlesQ = useContent();
+  const [search, setSearch] = useState("");
+  const articlesQ = useContent(undefined, undefined, search);
   const casesQ = useCases();
   const articles = articlesQ.data ?? [];
   const videos = articles.filter((a) => a.type === "video");
@@ -57,7 +59,7 @@ function HomePage() {
         <label htmlFor="home-search" className="sr-only">{t.common.search}</label>
         <div className="relative">
           <Search className="pointer-events-none absolute start-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-          <Input id="home-search" placeholder={t.common.search} className="h-12 rounded-full ps-11" />
+          <Input id="home-search" value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t.common.search} className="h-12 rounded-full ps-11" />
         </div>
       </section>
 

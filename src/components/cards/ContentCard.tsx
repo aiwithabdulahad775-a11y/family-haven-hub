@@ -3,7 +3,7 @@ import { GradientThumb } from "@/components/ui/gradient-thumb";
 import { Badge } from "@/components/ui/badge";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { useI18n } from "@/i18n/LanguageProvider";
-import type { Article } from "@/lib/dummy-data";
+import type { Article } from "@/lib/app-types";
 import { cn } from "@/lib/utils";
 
 const typeIcon = { article: BookOpen, video: Play, pdf: FileText };

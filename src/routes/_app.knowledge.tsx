@@ -1,10 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { GradientThumb } from "@/components/ui/gradient-thumb";
 import { ContentCard } from "@/components/cards/ContentCard";
 import { useI18n } from "@/i18n/LanguageProvider";
-import { sectionOrder } from "@/lib/dummy-data";
+import { sectionOrder } from "@/lib/app-types";
 import { useContent } from "@/lib/queries";
 
 export const Route = createFileRoute("/_app/knowledge")({
@@ -19,7 +20,8 @@ export const Route = createFileRoute("/_app/knowledge")({
 
 function KnowledgeIndex() {
   const { t } = useI18n();
-  const { data: articles = [] } = useContent();
+  const [search, setSearch] = useState("");
+  const { data: articles = [] } = useContent(undefined, undefined, search);
   return (
     <div className="animate-fade-in space-y-8">
       <header className="space-y-2">
@@ -29,7 +31,7 @@ function KnowledgeIndex() {
 
       <div className="relative">
         <Search className="pointer-events-none absolute start-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input placeholder={t.common.search} className="h-12 rounded-full ps-11" />
+        <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t.common.search} className="h-12 rounded-full ps-11" />
       </div>
 
       <section className="grid gap-3 sm:grid-cols-2">

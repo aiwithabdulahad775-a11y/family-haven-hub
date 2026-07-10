@@ -1,5 +1,5 @@
 import type { Database } from "@/integrations/supabase/types";
-import type { Article, CaseStudy, Counselor, SectionKey } from "@/lib/dummy-data";
+import type { Article, CaseStudy, Counselor, SectionKey } from "@/lib/app-types";
 
 type ContentRow = Database["public"]["Tables"]["content_items"]["Row"];
 type CaseRow = Database["public"]["Tables"]["case_studies"]["Row"];

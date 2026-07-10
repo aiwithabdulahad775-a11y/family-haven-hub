@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ContentCard } from "@/components/cards/ContentCard";
 import { useI18n } from "@/i18n/LanguageProvider";
-import { sectionOrder, type SectionKey } from "@/lib/dummy-data";
+import { sectionOrder, type SectionKey } from "@/lib/app-types";
 import { useContent } from "@/lib/queries";
 
 export const Route = createFileRoute("/_app/knowledge/$section")({
@@ -24,14 +24,9 @@ function SectionPage() {
   const { section } = Route.useParams() as { section: SectionKey };
   const { t } = useI18n();
   const [filter, setFilter] = useState<(typeof filters)[number]>("all");
-  const { data: all = [] } = useContent(section);
-  const items = all.filter((a) => {
-    if (filter === "all") return true;
-    if (filter === "articles") return a.type === "article";
-    if (filter === "videos") return a.type === "video";
-    if (filter === "pdfs") return a.type === "pdf";
-    return true;
-  });
+  const [search, setSearch] = useState("");
+  const typeArg = filter === "articles" ? "article" : filter === "videos" ? "video" : filter === "pdfs" ? "pdf" : undefined;
+  const { data: items = [] } = useContent(section, typeArg, search);
 
   return (
     <div className="animate-fade-in space-y-6">
@@ -45,7 +40,7 @@ function SectionPage() {
 
       <div className="relative">
         <Search className="pointer-events-none absolute start-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-        <Input placeholder={t.common.search} className="h-11 rounded-full ps-11" />
+        <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t.common.search} className="h-11 rounded-full ps-11" />
       </div>
 
       <div className="-mx-4 flex gap-2 overflow-x-auto px-4">

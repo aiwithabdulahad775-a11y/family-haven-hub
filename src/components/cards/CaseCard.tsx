@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { useI18n } from "@/i18n/LanguageProvider";
-import type { CaseStudy } from "@/lib/dummy-data";
+import type { CaseStudy } from "@/lib/app-types";
 
 export function CaseCard({ study }: { study: CaseStudy }) {
   const { t, lang } = useI18n();
