@@ -8,7 +8,7 @@ import { CaseCard } from "@/components/cards/CaseCard";
 import { GradientThumb } from "@/components/ui/gradient-thumb";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useI18n } from "@/i18n/LanguageProvider";
-import { sectionOrder } from "@/lib/dummy-data";
+import { sectionOrder } from "@/lib/app-types";
 import { useContent, useCases } from "@/lib/queries";
 
 export const Route = createFileRoute("/_app/")({

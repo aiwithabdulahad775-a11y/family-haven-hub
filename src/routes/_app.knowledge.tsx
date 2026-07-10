@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { GradientThumb } from "@/components/ui/gradient-thumb";
 import { ContentCard } from "@/components/cards/ContentCard";
 import { useI18n } from "@/i18n/LanguageProvider";
-import { sectionOrder } from "@/lib/dummy-data";
+import { sectionOrder } from "@/lib/app-types";
 import { useContent } from "@/lib/queries";
 
 export const Route = createFileRoute("/_app/knowledge")({

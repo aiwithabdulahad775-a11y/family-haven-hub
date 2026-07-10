@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ContentCard } from "@/components/cards/ContentCard";
 import { useI18n } from "@/i18n/LanguageProvider";
-import { sectionOrder, type SectionKey } from "@/lib/dummy-data";
+import { sectionOrder, type SectionKey } from "@/lib/app-types";
 import { useContent } from "@/lib/queries";
 
 export const Route = createFileRoute("/_app/knowledge/$section")({

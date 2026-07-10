@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { mapContent, mapCase, mapCounselor } from "@/lib/mappers";
-import type { SectionKey } from "@/lib/dummy-data";
+import type { SectionKey } from "@/lib/app-types";
 
 export function useContent(section?: SectionKey, type?: "article" | "video" | "pdf") {
   return useQuery({
