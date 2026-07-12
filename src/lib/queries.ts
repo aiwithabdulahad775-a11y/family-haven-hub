@@ -97,7 +97,7 @@ export function useSavedItems(userId: string | undefined) {
   useEffect(() => {
     if (!userId) return;
     const ch = supabase
-      .channel(`saved-${userId}`)
+      .channel(`saved-${userId}-${Math.random().toString(36).slice(2)}`)
       .on("postgres_changes", { event: "*", schema: "public", table: "saved_items", filter: `user_id=eq.${userId}` }, () => {
         qc.invalidateQueries({ queryKey: ["saved", userId] });
       })
