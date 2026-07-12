@@ -24,6 +24,7 @@ import { Route as AppContentRouteImport } from './routes/_app.content'
 import { Route as AppCaseStudiesRouteImport } from './routes/_app.case-studies'
 import { Route as AppAdminRouteImport } from './routes/_app.admin'
 import { Route as AppProfileIndexRouteImport } from './routes/_app.profile.index'
+import { Route as AppKnowledgeIndexRouteImport } from './routes/_app.knowledge.index'
 import { Route as AppProfileSettingsRouteImport } from './routes/_app.profile.settings'
 import { Route as AppProfileSavedRouteImport } from './routes/_app.profile.saved'
 import { Route as AppProfileNotificationsRouteImport } from './routes/_app.profile.notifications'
@@ -104,6 +105,11 @@ const AppProfileIndexRoute = AppProfileIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppProfileRoute,
 } as any)
+const AppKnowledgeIndexRoute = AppKnowledgeIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppKnowledgeRoute,
+} as any)
 const AppProfileSettingsRoute = AppProfileSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -149,6 +155,7 @@ export interface FileRoutesByFullPath {
   '/profile/notifications': typeof AppProfileNotificationsRoute
   '/profile/saved': typeof AppProfileSavedRoute
   '/profile/settings': typeof AppProfileSettingsRoute
+  '/knowledge/': typeof AppKnowledgeIndexRoute
   '/profile/': typeof AppProfileIndexRoute
 }
 export interface FileRoutesByTo {
@@ -158,7 +165,6 @@ export interface FileRoutesByTo {
   '/content': typeof AppContentRoute
   '/counseling': typeof AppCounselingRoute
   '/counselor': typeof AppCounselorRoute
-  '/knowledge': typeof AppKnowledgeRouteWithChildren
   '/auth/forgot': typeof AuthForgotRoute
   '/auth/login': typeof AuthLoginRoute
   '/auth/reset': typeof AuthResetRoute
@@ -169,6 +175,7 @@ export interface FileRoutesByTo {
   '/profile/notifications': typeof AppProfileNotificationsRoute
   '/profile/saved': typeof AppProfileSavedRoute
   '/profile/settings': typeof AppProfileSettingsRoute
+  '/knowledge': typeof AppKnowledgeIndexRoute
   '/profile': typeof AppProfileIndexRoute
 }
 export interface FileRoutesById {
@@ -192,6 +199,7 @@ export interface FileRoutesById {
   '/_app/profile/notifications': typeof AppProfileNotificationsRoute
   '/_app/profile/saved': typeof AppProfileSavedRoute
   '/_app/profile/settings': typeof AppProfileSettingsRoute
+  '/_app/knowledge/': typeof AppKnowledgeIndexRoute
   '/_app/profile/': typeof AppProfileIndexRoute
 }
 export interface FileRouteTypes {
@@ -215,6 +223,7 @@ export interface FileRouteTypes {
     | '/profile/notifications'
     | '/profile/saved'
     | '/profile/settings'
+    | '/knowledge/'
     | '/profile/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -224,7 +233,6 @@ export interface FileRouteTypes {
     | '/content'
     | '/counseling'
     | '/counselor'
-    | '/knowledge'
     | '/auth/forgot'
     | '/auth/login'
     | '/auth/reset'
@@ -235,6 +243,7 @@ export interface FileRouteTypes {
     | '/profile/notifications'
     | '/profile/saved'
     | '/profile/settings'
+    | '/knowledge'
     | '/profile'
   id:
     | '__root__'
@@ -257,6 +266,7 @@ export interface FileRouteTypes {
     | '/_app/profile/notifications'
     | '/_app/profile/saved'
     | '/_app/profile/settings'
+    | '/_app/knowledge/'
     | '/_app/profile/'
   fileRoutesById: FileRoutesById
 }
@@ -372,6 +382,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProfileIndexRouteImport
       parentRoute: typeof AppProfileRoute
     }
+    '/_app/knowledge/': {
+      id: '/_app/knowledge/'
+      path: '/'
+      fullPath: '/knowledge/'
+      preLoaderRoute: typeof AppKnowledgeIndexRouteImport
+      parentRoute: typeof AppKnowledgeRoute
+    }
     '/_app/profile/settings': {
       id: '/_app/profile/settings'
       path: '/settings'
@@ -412,10 +429,12 @@ declare module '@tanstack/react-router' {
 
 interface AppKnowledgeRouteChildren {
   AppKnowledgeSectionRoute: typeof AppKnowledgeSectionRoute
+  AppKnowledgeIndexRoute: typeof AppKnowledgeIndexRoute
 }
 
 const AppKnowledgeRouteChildren: AppKnowledgeRouteChildren = {
   AppKnowledgeSectionRoute: AppKnowledgeSectionRoute,
+  AppKnowledgeIndexRoute: AppKnowledgeIndexRoute,
 }
 
 const AppKnowledgeRouteWithChildren = AppKnowledgeRoute._addFileChildren(
