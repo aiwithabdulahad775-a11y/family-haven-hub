@@ -17,6 +17,7 @@ import { Route as AuthResetRouteImport } from './routes/auth.reset'
 import { Route as AuthLoginRouteImport } from './routes/auth.login'
 import { Route as AuthForgotRouteImport } from './routes/auth.forgot'
 import { Route as AppProfileRouteImport } from './routes/_app.profile'
+import { Route as AppKnowledgeRouteImport } from './routes/_app.knowledge'
 import { Route as AppCounselorRouteImport } from './routes/_app.counselor'
 import { Route as AppCounselingRouteImport } from './routes/_app.counseling'
 import { Route as AppContentRouteImport } from './routes/_app.content'
@@ -69,6 +70,11 @@ const AppProfileRoute = AppProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => AppRoute,
 } as any)
+const AppKnowledgeRoute = AppKnowledgeRouteImport.update({
+  id: '/knowledge',
+  path: '/knowledge',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCounselorRoute = AppCounselorRouteImport.update({
   id: '/counselor',
   path: '/counselor',
@@ -100,9 +106,9 @@ const AppProfileIndexRoute = AppProfileIndexRouteImport.update({
   getParentRoute: () => AppProfileRoute,
 } as any)
 const AppKnowledgeIndexRoute = AppKnowledgeIndexRouteImport.update({
-  id: '/knowledge/',
-  path: '/knowledge/',
-  getParentRoute: () => AppRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppKnowledgeRoute,
 } as any)
 const AppProfileSettingsRoute = AppProfileSettingsRouteImport.update({
   id: '/settings',
@@ -125,9 +131,9 @@ const AppProfileEditRoute = AppProfileEditRouteImport.update({
   getParentRoute: () => AppProfileRoute,
 } as any)
 const AppKnowledgeSectionRoute = AppKnowledgeSectionRouteImport.update({
-  id: '/knowledge/$section',
-  path: '/knowledge/$section',
-  getParentRoute: () => AppRoute,
+  id: '/$section',
+  path: '/$section',
+  getParentRoute: () => AppKnowledgeRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/content': typeof AppContentRoute
   '/counseling': typeof AppCounselingRoute
   '/counselor': typeof AppCounselorRoute
+  '/knowledge': typeof AppKnowledgeRouteWithChildren
   '/profile': typeof AppProfileRouteWithChildren
   '/auth/forgot': typeof AuthForgotRoute
   '/auth/login': typeof AuthLoginRoute
@@ -180,6 +187,7 @@ export interface FileRoutesById {
   '/_app/content': typeof AppContentRoute
   '/_app/counseling': typeof AppCounselingRoute
   '/_app/counselor': typeof AppCounselorRoute
+  '/_app/knowledge': typeof AppKnowledgeRouteWithChildren
   '/_app/profile': typeof AppProfileRouteWithChildren
   '/auth/forgot': typeof AuthForgotRoute
   '/auth/login': typeof AuthLoginRoute
@@ -204,6 +212,7 @@ export interface FileRouteTypes {
     | '/content'
     | '/counseling'
     | '/counselor'
+    | '/knowledge'
     | '/profile'
     | '/auth/forgot'
     | '/auth/login'
@@ -245,6 +254,7 @@ export interface FileRouteTypes {
     | '/_app/content'
     | '/_app/counseling'
     | '/_app/counselor'
+    | '/_app/knowledge'
     | '/_app/profile'
     | '/auth/forgot'
     | '/auth/login'
@@ -323,6 +333,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppProfileRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/knowledge': {
+      id: '/_app/knowledge'
+      path: '/knowledge'
+      fullPath: '/knowledge'
+      preLoaderRoute: typeof AppKnowledgeRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/counselor': {
       id: '/_app/counselor'
       path: '/counselor'
@@ -367,10 +384,10 @@ declare module '@tanstack/react-router' {
     }
     '/_app/knowledge/': {
       id: '/_app/knowledge/'
-      path: '/knowledge'
+      path: '/'
       fullPath: '/knowledge/'
       preLoaderRoute: typeof AppKnowledgeIndexRouteImport
-      parentRoute: typeof AppRoute
+      parentRoute: typeof AppKnowledgeRoute
     }
     '/_app/profile/settings': {
       id: '/_app/profile/settings'
@@ -402,13 +419,27 @@ declare module '@tanstack/react-router' {
     }
     '/_app/knowledge/$section': {
       id: '/_app/knowledge/$section'
-      path: '/knowledge/$section'
+      path: '/$section'
       fullPath: '/knowledge/$section'
       preLoaderRoute: typeof AppKnowledgeSectionRouteImport
-      parentRoute: typeof AppRoute
+      parentRoute: typeof AppKnowledgeRoute
     }
   }
 }
+
+interface AppKnowledgeRouteChildren {
+  AppKnowledgeSectionRoute: typeof AppKnowledgeSectionRoute
+  AppKnowledgeIndexRoute: typeof AppKnowledgeIndexRoute
+}
+
+const AppKnowledgeRouteChildren: AppKnowledgeRouteChildren = {
+  AppKnowledgeSectionRoute: AppKnowledgeSectionRoute,
+  AppKnowledgeIndexRoute: AppKnowledgeIndexRoute,
+}
+
+const AppKnowledgeRouteWithChildren = AppKnowledgeRoute._addFileChildren(
+  AppKnowledgeRouteChildren,
+)
 
 interface AppProfileRouteChildren {
   AppProfileEditRoute: typeof AppProfileEditRoute
@@ -436,10 +467,9 @@ interface AppRouteChildren {
   AppContentRoute: typeof AppContentRoute
   AppCounselingRoute: typeof AppCounselingRoute
   AppCounselorRoute: typeof AppCounselorRoute
+  AppKnowledgeRoute: typeof AppKnowledgeRouteWithChildren
   AppProfileRoute: typeof AppProfileRouteWithChildren
   AppIndexRoute: typeof AppIndexRoute
-  AppKnowledgeSectionRoute: typeof AppKnowledgeSectionRoute
-  AppKnowledgeIndexRoute: typeof AppKnowledgeIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -448,10 +478,9 @@ const AppRouteChildren: AppRouteChildren = {
   AppContentRoute: AppContentRoute,
   AppCounselingRoute: AppCounselingRoute,
   AppCounselorRoute: AppCounselorRoute,
+  AppKnowledgeRoute: AppKnowledgeRouteWithChildren,
   AppProfileRoute: AppProfileRouteWithChildren,
   AppIndexRoute: AppIndexRoute,
-  AppKnowledgeSectionRoute: AppKnowledgeSectionRoute,
-  AppKnowledgeIndexRoute: AppKnowledgeIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -479,3 +508,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
