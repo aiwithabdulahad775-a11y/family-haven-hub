@@ -76,7 +76,7 @@ export const dictionaries = {
       },
       confirmTitle: "Request received",
       confirmBody:
-        "This is a visual prototype — no message was sent. A counselor would normally follow up within 24 hours.",
+        "Your counseling request has been submitted successfully. Our team will review your request and contact you soon.",
     },
     profile: {
       welcome: "Welcome back",
@@ -194,7 +194,7 @@ export const dictionaries = {
       },
       confirmTitle: "درخواست موصول ہو گئی",
       confirmBody:
-        "یہ صرف بصری نمونہ ہے — کوئی پیغام نہیں بھیجا گیا۔ عام طور پر مشیر 24 گھنٹے میں رابطہ کرتا ہے۔",
+        "آپ کی مشاورت کی درخواست کامیابی سے جمع ہو گئی ہے۔ ہماری ٹیم آپ کی درخواست کا جائزہ لے کر جلد آپ سے رابطہ کرے گی۔",
     },
     profile: {
       welcome: "خوش آمدید",
