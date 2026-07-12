@@ -8,7 +8,7 @@ import { useI18n } from "@/i18n/LanguageProvider";
 import { sectionOrder } from "@/lib/app-types";
 import { useContent } from "@/lib/queries";
 
-export const Route = createFileRoute("/_app/knowledge")({
+export const Route = createFileRoute("/_app/knowledge/")({
   head: () => ({
     meta: [
       { title: "Knowledge Base — Sakinah" },
