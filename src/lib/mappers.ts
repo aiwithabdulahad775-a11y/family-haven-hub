@@ -11,6 +11,8 @@ export function mapContent(r: ContentRow): Article {
     section: (r.section as SectionKey) ?? "family",
     title: { en: r.title_en, ur: r.title_ur },
     excerpt: { en: r.excerpt_en ?? "", ur: r.excerpt_ur ?? "" },
+    body: { en: r.body_en ?? "", ur: r.body_ur ?? "" },
+    media_url: r.media_url,
     minutes: r.minutes ?? 0,
     type: r.type,
     hue: r.hue ?? 220,
