@@ -30,6 +30,7 @@ import { Route as AppProfileSavedRouteImport } from './routes/_app.profile.saved
 import { Route as AppProfileNotificationsRouteImport } from './routes/_app.profile.notifications'
 import { Route as AppProfileEditRouteImport } from './routes/_app.profile.edit'
 import { Route as AppKnowledgeSectionRouteImport } from './routes/_app.knowledge.$section'
+import { Route as AppArticleIdRouteImport } from './routes/_app.article.$id'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
@@ -135,6 +136,11 @@ const AppKnowledgeSectionRoute = AppKnowledgeSectionRouteImport.update({
   path: '/$section',
   getParentRoute: () => AppKnowledgeRoute,
 } as any)
+const AppArticleIdRoute = AppArticleIdRouteImport.update({
+  id: '/article/$id',
+  path: '/article/$id',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
@@ -150,6 +156,7 @@ export interface FileRoutesByFullPath {
   '/auth/login': typeof AuthLoginRoute
   '/auth/reset': typeof AuthResetRoute
   '/auth/signup': typeof AuthSignupRoute
+  '/article/$id': typeof AppArticleIdRoute
   '/knowledge/$section': typeof AppKnowledgeSectionRoute
   '/profile/edit': typeof AppProfileEditRoute
   '/profile/notifications': typeof AppProfileNotificationsRoute
@@ -170,6 +177,7 @@ export interface FileRoutesByTo {
   '/auth/reset': typeof AuthResetRoute
   '/auth/signup': typeof AuthSignupRoute
   '/': typeof AppIndexRoute
+  '/article/$id': typeof AppArticleIdRoute
   '/knowledge/$section': typeof AppKnowledgeSectionRoute
   '/profile/edit': typeof AppProfileEditRoute
   '/profile/notifications': typeof AppProfileNotificationsRoute
@@ -194,6 +202,7 @@ export interface FileRoutesById {
   '/auth/reset': typeof AuthResetRoute
   '/auth/signup': typeof AuthSignupRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/article/$id': typeof AppArticleIdRoute
   '/_app/knowledge/$section': typeof AppKnowledgeSectionRoute
   '/_app/profile/edit': typeof AppProfileEditRoute
   '/_app/profile/notifications': typeof AppProfileNotificationsRoute
@@ -218,6 +227,7 @@ export interface FileRouteTypes {
     | '/auth/login'
     | '/auth/reset'
     | '/auth/signup'
+    | '/article/$id'
     | '/knowledge/$section'
     | '/profile/edit'
     | '/profile/notifications'
@@ -238,6 +248,7 @@ export interface FileRouteTypes {
     | '/auth/reset'
     | '/auth/signup'
     | '/'
+    | '/article/$id'
     | '/knowledge/$section'
     | '/profile/edit'
     | '/profile/notifications'
@@ -261,6 +272,7 @@ export interface FileRouteTypes {
     | '/auth/reset'
     | '/auth/signup'
     | '/_app/'
+    | '/_app/article/$id'
     | '/_app/knowledge/$section'
     | '/_app/profile/edit'
     | '/_app/profile/notifications'
@@ -424,6 +436,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppKnowledgeSectionRouteImport
       parentRoute: typeof AppKnowledgeRoute
     }
+    '/_app/article/$id': {
+      id: '/_app/article/$id'
+      path: '/article/$id'
+      fullPath: '/article/$id'
+      preLoaderRoute: typeof AppArticleIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
@@ -470,6 +489,7 @@ interface AppRouteChildren {
   AppKnowledgeRoute: typeof AppKnowledgeRouteWithChildren
   AppProfileRoute: typeof AppProfileRouteWithChildren
   AppIndexRoute: typeof AppIndexRoute
+  AppArticleIdRoute: typeof AppArticleIdRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -481,6 +501,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppKnowledgeRoute: AppKnowledgeRouteWithChildren,
   AppProfileRoute: AppProfileRouteWithChildren,
   AppIndexRoute: AppIndexRoute,
+  AppArticleIdRoute: AppArticleIdRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -508,3 +529,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
