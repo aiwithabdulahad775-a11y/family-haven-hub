@@ -1,4 +1,5 @@
 import { FileText, Play, BookOpen } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { GradientThumb } from "@/components/ui/gradient-thumb";
 import { Badge } from "@/components/ui/badge";
 import { BookmarkButton } from "@/components/BookmarkButton";
@@ -12,7 +13,9 @@ export function ContentCard({ item, compact = false }: { item: Article; compact?
   const { t, lang } = useI18n();
   const Icon = typeIcon[item.type];
   return (
-    <article
+    <Link
+      to="/article/$id"
+      params={{ id: item.id }}
       className={cn(
         "group flex flex-col overflow-hidden rounded-3xl border border-border/60 bg-card text-card-foreground shadow-sm transition-all hover:-translate-y-0.5 hover:shadow-soft",
         compact ? "min-w-[240px]" : "",
@@ -31,9 +34,11 @@ export function ContentCard({ item, compact = false }: { item: Article; compact?
           <span className="text-xs text-muted-foreground">
             {item.minutes} {t.common.minutes}
           </span>
-          <BookmarkButton itemId={item.id} kind="content" />
+          <span onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+            <BookmarkButton itemId={item.id} kind="content" />
+          </span>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }

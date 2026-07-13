@@ -11,6 +11,7 @@ export type Article = {
   section: SectionKey;
   title: { en: string; ur: string };
   excerpt: { en: string; ur: string };
+  body: { en: string; ur: string };
   minutes: number;
   type: "article" | "video" | "pdf";
   hue: number;
