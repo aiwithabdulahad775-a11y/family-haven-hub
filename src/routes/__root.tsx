@@ -90,10 +90,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "Sakinah — Family Stability" },
       {
         property: "og:description",
-        content: "Islamic-inspired family stability guidance in English and Urdu.",
+        content: "Sakinah is a calm, bilingual family stability companion with knowledge, case studies, and counseling resources.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Sakinah — Family Stability" },
+      { name: "twitter:description", content: "Sakinah is a calm, bilingual family stability companion with knowledge, case studies, and counseling resources." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/46ef149f-cb76-41fd-ac63-b41f8f7e5a31/id-preview-7e4953da--8021c59f-865f-4bcc-b2f7-ee9780a1fe18.lovable.app-1783904858949.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/46ef149f-cb76-41fd-ac63-b41f8f7e5a31/id-preview-7e4953da--8021c59f-865f-4bcc-b2f7-ee9780a1fe18.lovable.app-1783904858949.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
