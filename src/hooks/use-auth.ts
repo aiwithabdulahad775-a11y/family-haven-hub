@@ -8,7 +8,10 @@ export function useAuth() {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [roles, setRoles] = useState<AppRole[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [sessionLoading, setSessionLoading] = useState(true);
+  // Roles are fetched separately; track which user they belong to so
+  // "loading" stays true until roles for the current user have arrived.
+  const [rolesUserId, setRolesUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const { data: sub } = supabase.auth.onAuthStateChange((_event, s) => {
@@ -20,7 +23,7 @@ export function useAuth() {
     supabase.auth.getSession().then(({ data }) => {
       setSession(data.session);
       setUser(data.session?.user ?? null);
-      setLoading(false);
+      setSessionLoading(false);
     });
 
     return () => {
@@ -38,11 +41,14 @@ export function useAuth() {
       .then(({ data }) => {
         if (cancelled) return;
         setRoles(((data ?? []).map((r) => r.role)) as AppRole[]);
+        setRolesUserId(user.id);
       });
     return () => {
       cancelled = true;
     };
   }, [user]);
+
+  const loading = sessionLoading || (!!user && rolesUserId !== user.id);
 
   return {
     session,
