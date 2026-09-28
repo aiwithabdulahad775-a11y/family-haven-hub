@@ -61,7 +61,17 @@ function ArticlePage() {
 
       {data.type === "video" && data.media_url ? (
         <div className="aspect-video overflow-hidden rounded-3xl border border-border/60 bg-black">
-          <video src={data.media_url} controls playsInline className="h-full w-full" />
+          {getYouTubeEmbedUrl(data.media_url) ? (
+            <iframe
+              src={getYouTubeEmbedUrl(data.media_url)!}
+              title={title}
+              className="h-full w-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          ) : (
+            <video src={data.media_url} controls playsInline className="h-full w-full" />
+          )}
         </div>
       ) : data.type === "pdf" && data.media_url ? (
         <div className="overflow-hidden rounded-3xl border border-border/60 bg-muted">
