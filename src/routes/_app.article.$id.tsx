@@ -11,6 +11,11 @@ import { useI18n } from "@/i18n/LanguageProvider";
 
 const typeIcon = { article: BookOpen, video: Play, pdf: FileText };
 
+function getYouTubeEmbedUrl(url: string): string | null {
+  const m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{6,})/);
+  return m ? `https://www.youtube.com/embed/${m[1]}` : null;
+}
+
 export const Route = createFileRoute("/_app/article/$id")({
   head: () => ({ meta: [{ title: "Article — Sakinah" }] }),
   component: ArticlePage,
