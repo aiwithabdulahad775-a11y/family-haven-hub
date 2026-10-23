@@ -17,17 +17,30 @@ export const Route = createFileRoute("/_app/admin")({
 const ALL_ROLES: AppRole[] = ["user", "counselor", "content_manager", "admin"];
 
 function AdminPage() {
-  const { user, roles, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  // Guard on the same user_roles-backed check the Profile page relies on,
+  // via the has_role() function, so the redirect only fires once the role
+  // lookup has actually resolved.
+  const adminGate = useQuery({
+    queryKey: ["admin-gate", user?.id],
+    enabled: !authLoading && !!user,
+    queryFn: async () => {
+      const { data, error } = await supabase.rpc("has_role", { _user_id: user!.id, _role: "admin" });
+      if (error) throw error;
+      return data === true;
+    },
+  });
+  const isAdmin = adminGate.data === true;
   useEffect(() => {
-    if (loading) return;
+    if (authLoading) return;
     if (!user) navigate({ to: "/auth/login" });
-    else if (!roles.includes("admin")) navigate({ to: "/profile" });
-  }, [loading, user, roles, navigate]);
+    else if (adminGate.isSuccess && !isAdmin) navigate({ to: "/profile" });
+  }, [authLoading, user, adminGate.isSuccess, isAdmin, navigate]);
 
   const stats = useQuery({
     queryKey: ["admin-stats"],
-    enabled: !!user && roles.includes("admin"),
+    enabled: isAdmin,
     queryFn: async () => {
       const headOpts = { count: "exact" as const, head: true };
       const [profiles, requests, articles, videos, pdfs, categories] = await Promise.all([
@@ -51,7 +64,7 @@ function AdminPage() {
 
   const recent = useQuery({
     queryKey: ["admin-recent"],
-    enabled: !!user && roles.includes("admin"),
+    enabled: isAdmin,
     queryFn: async () => {
       const [content, reqs, users] = await Promise.all([
         supabase.from("content_items").select("id, title_en, type, created_at").is("deleted_at", null).order("created_at", { ascending: false }).limit(5),
@@ -67,7 +80,7 @@ function AdminPage() {
     },
   });
 
-  if (loading || !user || !roles.includes("admin")) return <Skeleton className="h-40 w-full rounded-3xl" />;
+  if (authLoading || !user || !isAdmin) return <Skeleton className="h-40 w-full rounded-3xl" />;
 
   const s = stats.data;
   return (

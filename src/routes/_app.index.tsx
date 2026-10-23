@@ -114,11 +114,13 @@ function HomePage() {
                 <FileText className="absolute inset-0 m-auto h-6 w-6 text-white" />
               </GradientThumb>
               <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold">{p.title[lang]}</p>
+                <p className="line-clamp-2 text-sm font-semibold">{p.title[lang]}</p>
                 <p className="truncate text-xs text-muted-foreground">PDF · {p.minutes} {t.common.minutes}</p>
               </div>
-              <Button variant="ghost" size="sm" className="rounded-full">
-                <Play className="me-1 h-4 w-4" /> Open
+              <Button asChild variant="ghost" size="sm" className="shrink-0 rounded-full">
+                <Link to="/article/$id" params={{ id: p.id }}>
+                  <Play className="me-1 h-4 w-4" /> Open
+                </Link>
               </Button>
             </div>
           ))}
