@@ -16,6 +16,15 @@ function getYouTubeEmbedUrl(url: string): string | null {
   return m ? `https://www.youtube.com/embed/${m[1]}` : null;
 }
 
+function MissingFile() {
+  return (
+    <div className="flex flex-col items-center gap-2 rounded-3xl border border-dashed border-border p-10 text-center">
+      <FileText className="h-8 w-8 text-muted-foreground" />
+      <p className="text-sm text-muted-foreground">The file for this item has not been uploaded yet.</p>
+    </div>
+  );
+}
+
 export const Route = createFileRoute("/_app/article/$id")({
   head: () => ({ meta: [{ title: "Article — Sakinah" }] }),
   component: ArticlePage,
@@ -64,31 +73,39 @@ function ArticlePage() {
         <ArrowLeft className="h-4 w-4 rtl:rotate-180" /> {t.common.back}
       </Link>
 
-      {data.type === "video" && data.media_url ? (
-        <div className="aspect-video overflow-hidden rounded-3xl border border-border/60 bg-black">
-          {getYouTubeEmbedUrl(data.media_url) ? (
-            <iframe
-              src={getYouTubeEmbedUrl(data.media_url)!}
-              title={title}
-              className="h-full w-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          ) : (
-            <video src={data.media_url} controls playsInline className="h-full w-full" />
-          )}
-        </div>
-      ) : data.type === "pdf" && data.media_url ? (
-        <div className="overflow-hidden rounded-3xl border border-border/60 bg-muted">
-          <object data={data.media_url} type="application/pdf" className="h-[70vh] w-full">
-            <div className="p-6 text-center text-sm text-muted-foreground">
-              <p className="mb-3">PDF preview not supported in this browser.</p>
-              <a href={data.media_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card px-4 py-2 text-sm font-medium hover:shadow-soft">
-                <Download className="h-4 w-4" /> Open PDF
-              </a>
-            </div>
-          </object>
-        </div>
+      {data.type === "video" ? (
+        data.media_url ? (
+          <div className="aspect-video overflow-hidden rounded-3xl border border-border/60 bg-black">
+            {getYouTubeEmbedUrl(data.media_url) ? (
+              <iframe
+                src={getYouTubeEmbedUrl(data.media_url)!}
+                title={title}
+                className="h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            ) : (
+              <video src={data.media_url} controls playsInline className="h-full w-full" />
+            )}
+          </div>
+        ) : (
+          <MissingFile />
+        )
+      ) : data.type === "pdf" ? (
+        data.media_url ? (
+          <div className="overflow-hidden rounded-3xl border border-border/60 bg-muted">
+            <object data={data.media_url} type="application/pdf" className="h-[70vh] w-full">
+              <div className="p-6 text-center text-sm text-muted-foreground">
+                <p className="mb-3">PDF preview not supported in this browser.</p>
+                <a href={data.media_url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-card px-4 py-2 text-sm font-medium hover:shadow-soft">
+                  <Download className="h-4 w-4" /> Open PDF
+                </a>
+              </div>
+            </object>
+          </div>
+        ) : (
+          <MissingFile />
+        )
       ) : (
         <GradientThumb hue={data.hue} className="aspect-[16/9] rounded-3xl">
           <Badge className="bg-white/25 text-white backdrop-blur">
